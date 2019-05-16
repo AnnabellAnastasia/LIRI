@@ -3,6 +3,7 @@ var keys = require('./keys.js');
 
 var Twitter = require('twitter');
 var spotify = require('spotify');
+var request = require('request');
 
 var getMyTweets = function (){
 
@@ -45,7 +46,15 @@ var getMeSpotify = function(songName) {
     });
 }
 
-
+var getMeMovie = function(movieName){
+    request('http://www.omdbapi.com/?t' + movieName + '&y=&plot=short&r=json', 
+    function (error, response, body) {
+    if (!error && response.statusCode == 200){
+        console.log(body);
+    } 
+    })
+}
+     
 
 var pick = function(caseData, functionData){
     switch(caseData){
@@ -55,6 +64,8 @@ var pick = function(caseData, functionData){
         case 'spotify-this-song':
         getMeSpotify(functionData);
         break;
+        case 'movie-this':
+        getMeMovie(functionData);
         default:
         console.log('Liri does not know that');
     }
