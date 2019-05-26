@@ -18,27 +18,30 @@ var userSearch = process.argv.slice(3).join(" ");
 
 // Using switch statement to execute the code appropriate to the appCommend that is inputed from the user
 function liriRun(appCommand, userSearch) {
-    switch (AppCommand) {
-        case "concert-this":
-            searchForBandsInTown(userSearch);
-            b.slice(3).join(" ");
 
-        // Using switch statement to execute the code appropriate to the appCommend that is inputed from the userk;
+
+    switch (appCommand) {
         case "spotify-this-song":
             getMeSpotify(userSearch);
-            b.slice(3).join(" ");
-
-        // Using switch statement to execute the code appropriate to the appCommend that is inputed from the userk;
-        case "movie-this":
-            getMeMovie(userSearch);
-            b.slice(3).join(" ");
-
-        // Using switch statement to execute the code appropriate to the appCommend that is inputed from the userk;
-        case "do-what-it-says":
-            doWhatItSays();
             break;
+
+        case "concert-this":
+            getBranndsInTown(userSearch);
+            break;
+
+        case "movie-this":
+            getOMDB(userSearch);
+            break;
+
+        case "do-what-it-says":
+            getRandom();
+            break;
+            // if appCommand is left blank, return a default message to user
+
+            default:
+                console.log("Please enter one of the following commands: 'concert-this', 'spotify-this-song', 'movie-this' and 'do-what-it-says'")
     }
-}
+};
 
 //pull in required variables
 // var spotifyTest = process.env.SPOTIFY_ID
