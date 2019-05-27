@@ -1,5 +1,5 @@
-require("dotenv").config();
-
+// require('dotenv').config()
+// require('dotenv').config({path: __dirname + './.env'})
 // Create a variable to access the keys.js file (which is in the same root directory) to access the api keys
 // Create variables for the required package ( node-spotify-api, axios, fs for read/write, and moment)
 
@@ -22,7 +22,7 @@ function liriRun(appCommand, userSearch) {
 
     switch (appCommand) {
         case "spotify-this-song":
-            getMeSpotify(userSearch);
+            getSpotify(userSearch);
             break;
 
         case "concert-this":
@@ -36,115 +36,92 @@ function liriRun(appCommand, userSearch) {
         case "do-what-it-says":
             getRandom();
             break;
-            // if appCommand is left blank, return a default message to user
+        // if appCommand is left blank, return a default message to user
 
-            default:
-                console.log("Please enter one of the following commands: 'concert-this', 'spotify-this-song', 'movie-this' and 'do-what-it-says'")
+        default:
+            console.log("Please enter one of the following commands: 'concert-this', 'spotify-this-song', 'movie-this' and 'do-what-it-says'")
     }
 };
+// function to search Spotify
 
-//pull in required variables
-// var spotifyTest = process.env.SPOTIFY_ID
+function getSpotify(songName) {
+    var spotify = new Spotify(keys.spotify);
+    if (!songName) {
+        songName = "The Sign";
+    };
 
-// fs.appendFile('log.txt', appCommand + ",", function (err) {
-//     if (err) throw err;
-// });
+    spotify.search({ type: 'track', query: songName }, function (err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+        console.log('---------------------------------------------');
+        console.log("Artist: " + data.tracks.items[0].album.artists[0].name + "\r\n");
+        console.log("Song Name: " + data.tracks.items[0].name + "\r\n");
+        console.log("Preview URL: " + data.tracks.items[0].href + "\r\n");
+        console.log("Album: " + data.tracks.items[0].album.name + "\r\n");
+        console.log('---------------------------------------------');
 
-// 
+        var logSong = "========Begin Spotify log Entry======" + "\nArtist: " + data.tracks.items[0].album.artists[0].name
 
-// function searchForBandsInTown(artist) {
-//     var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
-//     axios.get(queryUrl).then(
-//         function(response) {
-//             if(response.data[0].venue !=  undefined) {
-//                 console.log("Event Veunue: " + response.data[0].venue.name);
-//                 console.log("Event Location: " + response.data[0].venue.city);
-//                 var eventDateTime = moment(response.data[0].datetime);
-//                 console.log("Event Date & Time: " + eventDateTime.format("dddd, MMMM Do YYYY"));
-//             }
-//             else {
-//                 console.log("No results found.");
-//             }
-//         }
-//     ).catch(function (error) {
-//         console.log (error);
-//   });
-// }
+        fs.appendFile('log.txt', logSong, function (err) {
+            if (err) throw err;
+        });
+    });
+};
+// function to search bands in town API
+function getBranndsInTown(artist) {
 
-// function getMeSpotify(song) {
-//     spotify
-//         .search({ type: 'track', query: song })
-//         .then(function (response) {
-//             if (response.tracks.total === 0) {
-//                 errorConditionForSpotify();
-//             } else {
-//                 console.log('---------------------------------------------');
-//                 console.log("Artist: " + response.tracks.items[0].artists[0].name);
-//                 console.log("Track: " + response.tracks.items[0].name);
-//                 console.log("Preview URL: " + response.tracks.items[0].preview_url);
-//                 console.log("Album: " + response.tracks.items[0].album.name);
-//                 console.log('---------------------------------------------');
+    var artist = userSearch;
 
-//             }
-//         }).catch(function (error) {
-//             console.log(error);
-//             console.log("No Results found. Showing results for 'The Sign' by Ace of Base");
-//         });
-// }
+    var bandQueryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
 
-// function errorConditionForSpotify() {
-//     var spotify = new Spotify(keys.spotify);
+    axios.get(bandQueryURL).then(
+        function (response) {
+            // console.log(response.data)
+            // adding a line break for clarity of when search results begin
+            console.log("--------------------------------------");
+            console.log("Event Veunue: " + response.data[0].venue.name + "\r\n");
+            console.log("Event Location: " + response.data[0].venue.city + "\r\n");
+            console.log("Event Date & Time: " + moment(response.data[0].datetime).format("MM-DD-YYYY") + "\r\n");
 
-//     spotify
-//         .search({ type: 'track', query: 'The Sign' })
-//         .then(function (response) {
-//             for (var i = 0; i < response.tracks.items.length; i++) {
-//                 if (response.tracks.items[i].artists[0].name === "Ace of Base") {
-//                     console.log("Artist: " + response.tracks.items[i].artists[0].name);
-//                     console.log("Track: " + response.tracks.items[i].name);
-//                     console.log("Preview URL: " + response.tracks.items[i].preview_url);
-//                     console.log("Album: " + response.tracks.items[i].album.name);
-//                     i = response.tracks.items.length;
-//                 }
-//             }
-//         }).catch(function (error) {
-//             console.log(error);
-//             console.log("No Results found. ");
-//         });
-// }
+            //    Append text into log.txt file
+            var logConcert = "--------Begin Concert log Entry---------" + "\nName of the musician: " + artist + "\nName of the venue:" +
 
-// function getMeMovie(movieName) {
-//     axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&tomatoes=true&apikey=trilogy").then(
-//         function (response) {
-//             //console.log(response.data);
-//             if (response.data.Title != undefined) {
-//                 console.log("Title: " + response.data.Title);
-//                 console.log("Year: " + response.data.Year);
-//                 console.log("imdbRating:: " + response.data.imdbRating);
-//                 console.log("RottenTomatoes: " + response.data.tomatoRating);
-//                 console.log("Country:: " + response.data.Country);
-//                 console.log("Language:: " + response.data.Language);
-//                 console.log("Plot: " + response.data.Plot);
-//                 console.log("Actors: " + response.data.Actors);
-//             }
-//             else {
-//                 getMeMovie("Mr. Nobody");
-//             }
-//         }
-//         // if response is empty call the api again with the "default" movie 
-//     ).catch(function (error) {
-//         console.log(error);
-//         console.log("No Results found. ");
-//     });
-// }
+                fs.appendFile("log.txt", logConcert, function (err) {
+                    if (err) throw err;
 
-// function doWhatItSays() {
-//     fs.readFile("random.txt", "utf8", function (error, data) {
-//         var dataArr = data.split(",");
-//         getMeSpotify(dataArr[1])
-//         // If the code experiences any errors it will log the error to the console.
-//         if (error) {
-//             return console.log(error);
-//         }
-//     });
-// }
+                });
+
+        });
+};
+
+function getOMDB(movie) {
+    if (movie) {
+        movie = "Mr.Nobody";
+    }
+    var movieQueryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&tomatoes=true&apikey=trilogy";
+    axios.request(movieQueryUrl).then(
+        function (response) {
+            console.log("Title: " + response.data.Title + "\r\n");
+            console.log("Year: " + response.data.Year + "\r\n");
+            console.log("imdbRating:: " + response.data.imdbRating + "\r\n");
+            console.log("RottenTomatoes: " + response.data.tomatoRating);
+            console.log("Country:: " + response.data.Country + "\r\n");
+            console.log("Language:: " + response.data.Language + "\r\n");
+            console.log("Plot: " + response.data.Plot + "\r\n");
+            console.log("Actors: " + response.data.Actors + "\r\n");
+
+            var logMovie = "----------Begin Movie Log Entry--------" + "\nMovie title:" + response.data.Title + "\nYear released:" + response.data.Year
+        fs.appendFile("log.txt", logMovie, function (err){
+            if (err) throw err;
+        });
+        });
+};
+    // function to log results from the other functions
+
+function logResults(data) {
+    fs.appendFile("log.txt", data, function (err) {
+        if (err) throw err;
+    });
+};
+liriRun(appCommand, userSearch);
