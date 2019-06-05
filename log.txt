@@ -1,0 +1,5 @@
+========Begin Spotify log Entry======
+Artist: [object Object]undefined----------Begin Movie Log Entry--------
+Movie title:Mr. Nobody
+Year released:2009========Begin Spotify log Entry======
+Artist: [object Object]

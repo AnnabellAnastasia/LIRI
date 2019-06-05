@@ -10,12 +10,12 @@ var moment = require('moment');
 
 // // Variables for the arguments to be entered by the user in liri
 var appCommand = process.argv[2]
-console.log("appCommand: " + appCommand);
+// console.log("appCommand: " + appCommand);
 // use the slice method to account for user's search starting with index3 position forth because search could have several words
 var userSearch = process.argv.slice(3).join(" ");
 
 // Using switch statement to execute the code appropriate to the appCommend that is inputed from the user
-// function liriRun(appCommand, userSearch) {
+function liriRun(appCommand, userSearch) {
 
     switch (appCommand) {
         case "spotify-this-song":
@@ -58,7 +58,7 @@ function getSpotify(songName) {
         console.log("Album: " + data.tracks.items[0].album.name + "\r\n");
         console.log('---------------------------------------------');
 
-        var logSong = "========Begin Spotify log Entry======" + "\nArtist: " + data.tracks.items[0].album.artists[0].name
+        var logSong = "========Begin Spotify log Entry======" + "\nArtist: " + data.tracks.items[0].album.artists[0]
 
         fs.appendFile('log.txt', logSong, function (err) {
             if (err) throw err;
@@ -74,11 +74,11 @@ function getBranndsInTown(artist) {
 
     axios.get(bandQueryURL)
         .then(function (response) {
-            console.log(response)
-        })
-        .catch(function (error) {
-            console.log(error)
-        })
+        //     console.log(response)
+        // })
+        // .catch(function (error) {
+        //     console.log(error)
+        // })
 
             // adding a line break for clarity of when search results begin
             console.log("--------------------------------------");
@@ -93,7 +93,7 @@ function getBranndsInTown(artist) {
                     if (err) throw err;
 
                 });
-
+            });
 };
 
 function getOMDB(movie) {
@@ -120,9 +120,23 @@ function getOMDB(movie) {
 };
 // function to log results from the other functions
 
-function getRandom(data) {
+function getRandom() {
+    fs.readFile("random.txt", "utf8", function (error, data){
+        if (error){
+            return console.log(error);
+    } else {
+        console.log(data);
+        var randomData = data.split(",");
+        liriRun(randomData[0], randomData[1]);
+    }
+    // console.log("\r\n" +"testing : " + randomData[0] + randomData[1]);
+});
+};
+// Function to log results from the other functions
+function logResults (data){
     fs.appendFile("log.txt", data, function (err) {
         if (err) throw err;
     });
 };
+    
 liriRun(appCommand, userSearch);
