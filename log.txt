@@ -11,4 +11,9 @@ Movie title:Mr. Nobody
 Year released:2009----------Begin Movie Log Entry--------
 Movie title:Mr. Nobody
 Year released:2009========Begin Spotify log Entry======
-Artist: Ariana Grande
+Artist: Ariana Grandeundefined========Begin Spotify log Entry======
+Artist: The Chainsmokers----------Begin Movie Log Entry--------
+Movie title:undefined
+Year released:undefined----------Begin Movie Log Entry--------
+Movie title:Mr. Nobody
+Year released:2009undefined
