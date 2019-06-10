@@ -2,4 +2,16 @@
 Artist: [object Object]undefined----------Begin Movie Log Entry--------
 Movie title:Mr. Nobody
 Year released:2009========Begin Spotify log Entry======
-Artist: [object Object]
+Artist: [object Object]undefined========Begin Spotify log Entry======
+Artist: [object Object]undefined========Begin Spotify log Entry======
+Artist: [object Object]----------Begin Movie Log Entry--------
+Movie title:undefined
+Year released:undefined----------Begin Movie Log Entry--------
+Movie title:Mr. Nobody
+Year released:2009----------Begin Movie Log Entry--------
+Movie title:Mr. Nobody
+Year released:2009----------Begin Movie Log Entry--------
+Movie title:Mr. Nobody
+Year released:2009----------Begin Movie Log Entry--------
+Movie title:Mr. Nobody
+Year released:2009
